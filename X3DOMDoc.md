@@ -1,0 +1,12 @@
+Log of X3DOMsupport
+======
+
+Currently testing:
+
+```XML
+			<x3d width='854px' height='480'>
+				<scene>
+					<shape><appearance><MovieTexture url='"./files/bunny480p.mp4"'></MovieTexture> </appearance><box></box></shape>
+				</scene>
+			</x3d>
+```

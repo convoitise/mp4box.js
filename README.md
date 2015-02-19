@@ -5,6 +5,7 @@ MP4Box.js
 
 JavaScript library to process MP4 files in the browser, with support for progressive parsing. 
 Inspired by the [MP4Box](http://gpac.wp.mines-telecom.fr/mp4box/) tool from the [GPAC](http://gpac.wp.mines-telecom.fr) project. 
+X3DOM intergration doc-file: [X3DOMDoc](X3DOMDoc.md)
 It can be used to:
 - [get information about an MP4 file] (#getting-information), 
 - [segment](#segmentation) an MP4 file for use with the [Media Source Extension API](https://dvcs.w3.org/hg/html-media/raw-file/tip/media-source/media-source.html),
