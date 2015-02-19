@@ -4,7 +4,7 @@
     	<meta charset="UTF-8">
 		<title>MP4Box.js - JavaScript MP4 Reader/Fragmenter</title>
 		<link rel="stylesheet" href="style.css" />
-        <script src="../src/Log.js"></script>
+        <script src="../src/log.js"></script>
         <script src="../src/DataStream.js"></script>
         <script src="../src/descriptor.js"></script>
         <script src="../src/box.js"></script>
@@ -13,10 +13,18 @@
         <script src="../src/mp4box.js"></script>
 		<script src="downloader.js"></script>
 		<script src="index.js"></script>
+		<script src="http://x3dom.org/release/x3dom.js"></script>
+		<script src="http://www.x3dom.org/download/1.3/x3dom.swf"></script>
+		<link rel="stylesheet" href="http://www.x3dom.org/release/x3dom.css">
     </head>
 	<body>
 		<div>
 			<h2>Demonstration of MP4Box.js</h2>
+			<x3d width='854px' height='480'>
+				<scene>
+					<shape><appearance><MovieTexture url='"./files/bunny480p.mp4"'></MovieTexture> </appearance><box></box></shape>
+				</scene>
+			</x3d>
 			<h3>HTML5 video beyond the MSE API</h3>
 			<video id="v" width="640" height="480" autoplay controls> </video>
 			<fieldset class="downloadControls">
@@ -48,7 +56,7 @@
 			<fieldset>
 				<legend>Select or set URL:</legend>
 				<select id="urlSelector" onchange="setUrl(this.value);" onfocus="this.selectedIndex = -1;">
-					<option value="./mp4/h264bl.mp4">Video Counter (10min, unfragmented, AVC Baseline)</option>
+					<option value="http://download.tsi.telecom-paristech.fr/gpac/mp4box.js/mp4/h264bl.mp4">Video Counter (10min, unfragmented, AVC Baseline)</option>
 					<option value="./mp4/a.mp4">Video Counter (10min, fragmented, AVC Baseline)</option>
 					<option value="./mp4/aaclow.mp4">Audio Bips (10 min, unfragmented, AAC)</option>
 					<option value="./mp4/avw.mp4">Multiplexed Audio/Video/Subtitle (unfragmented, AVC+AAC+WebVTT)</option>
