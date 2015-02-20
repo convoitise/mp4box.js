@@ -12,6 +12,10 @@ var downloader = new Downloader();
 /* the HTML5 video element */
 var video;
 
+/* the HTML5 parent element of meta (reserved for X3D, SVG etc)*/
+var metaElement;
+
+
 var autoplay = false;
 
 var startButton, loadButton, initButton, initAllButton, playButton;
@@ -23,6 +27,7 @@ var saveChecked;
 
 window.onload = function () {
 	video = document.getElementById('v');
+	metaElement = document.getElementById('metaOut');
 	playButton = document.getElementById("playButton");
 	startButton = document.getElementById("startButton");
 	loadButton = document.getElementById("loadButton");
@@ -413,6 +418,31 @@ function initializeSourceBuffers() {
 	startButton.disabled = false;
 }
 
+/* XML-specific functions */
+function parseXMLtoDOM(parentElement, xmlObject){
+	
+	var oSerializer = new XMLSerializer();	//we could do it as a string but this is the "proper" way to do it
+	var sXML = oSerializer.serializeToString(xmlObject);
+	var w, h;
+
+	console.log("serialized XML document to be parsed: "+sXML);
+	w = xmlObject.getAttribute("width");
+	h = xmlObject.getAttribute("height");
+	if(w && h){
+		metaElement.style.width = xmlObject.getAttribute("width");
+		metaElement.style.height = xmlObject.getAttribute("height");
+	}
+
+	metaElement.innerHTML = sXML;	//if we did it the string way: metaElement.innerHTML = xmlSubSample.documentString;
+
+	if((xmlObject.tagName == "x3d") || (xmlObject.nodeName == "x3d")){
+		x3dom.reload();
+	}else if((xmlObject.tagName == "svg") || (xmlObject.nodelName == "svg")){
+		//Do something for svg
+	}
+
+}
+
 /* main player functions */
 function reset() {
 	stop();
@@ -472,7 +502,10 @@ function load() {
 				}
 			} else if (sample.description.type === "metx" || sample.description.type === "stpp") {
 				var xmlSub4Parser = new XMLSubtitlein4Parser();
-				var xmlSubSample = xmlSub4Parser.parseSample(sample); 
+				var xmlSubSample = xmlSub4Parser.parseSample(sample);
+				if(xmlSubSample.document.getElementsByTagName("x3d").length>0){
+					parseXMLtoDOM(metaElement, xmlSubSample.document.firstChild)	//¡k we handle one x3d for now
+				}
 				console.log("Parsed XML sample at time "+Log.getDurationString(sample.dts,sample.timescale)+" :", xmlSubSample.document);
 			} else if (sample.description.type === "mett" || sample.description.type === "sbtt" || sample.description.type === "stxt") {
 				var textSampleParser = new Textin4Parser();
