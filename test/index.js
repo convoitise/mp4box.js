@@ -435,9 +435,9 @@ function parseXMLtoDOM(parentElement, xmlObject){
 
 	metaElement.innerHTML = sXML;	//if we did it the string way: metaElement.innerHTML = xmlSubSample.documentString;
 
-	if((xmlObject.tagName == "x3d") || (xmlObject.nodeName == "x3d")){
+	if((xmlObject.tagName.toLowerCase() == "x3d") || (xmlObject.nodeName.toLowerCase() == "x3d")){
 		x3dom.reload();
-	}else if((xmlObject.tagName == "svg") || (xmlObject.nodelName == "svg")){
+	}else if((xmlObject.tagName.toLowerCase() == "svg") || (xmlObject.nodeName.toLowerCase() == "svg")){
 		//Do something for svg
 	}
 
