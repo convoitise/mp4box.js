@@ -1,0 +1,5 @@
+#other testfiles
+/bucket/*
+
+#webserver used for local testing
+mongoose-free-5.5.exe
