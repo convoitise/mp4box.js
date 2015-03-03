@@ -13,7 +13,8 @@
         <script src="../src/mp4box.js"></script>
 		<script src="downloader.js"></script>
 		<script src="index.js"></script>
-		<script src="http://x3dom.org/release/x3dom.js"></script>
+		<script src="http://x3dom.org/release/x3dom.debug.js"></script>
+		<!-- <script src="http://x3dom.org/release/x3dom.js"></script> -->
 		<!-- <script src="http://www.x3dom.org/download/1.3/x3dom.swf"></script> -->
 		<link rel="stylesheet" href="http://www.x3dom.org/release/x3dom.css">
     </head>
@@ -44,7 +45,8 @@
 				<legend>Select or set URL:</legend>
 				<select id="urlSelector" onchange="setUrl(this.value);" onfocus="this.selectedIndex = -1;">
 					<option value="./files/bunny[original].mp4">Big Buck Bunny (1min, AVC)</option>
-					<option value="./files/bunny.mp4">Big Buck Bunny (with sample metx track)</option>
+					<option value="./files/movieTexture/bunnyX3D.mp4">Big Buck Bunny (with sample metx track - movieTexture)</option>
+					<option value="./files/Texture/bunnyX3D.mp4">Big Buck Bunny (with sample metx track - canvas Texture)</option>
 					<option value="./files/counter[original].mp4">Video Counter (10min, unfragmented, AVC Baseline)</option>
 					<option value="./files/counter.mp4">Video Counter (with sample metx track)</option>
 									</select>

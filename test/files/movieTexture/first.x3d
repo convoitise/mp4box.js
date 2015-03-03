@@ -1,0 +1,10 @@
+<x3d xmlns="http://www.x3dom.org/x3dom" showStat="true" showLog="false" x="0px" y="0px" width='854px' height='480px'>
+	<scene DEF='scene'>
+		<shape>
+			<appearance>
+				<MovieTexture repeatS="false" repeatT="false" url='"./files/bunny.mp4"'></MovieTexture>
+			</appearance>
+			<box></box>
+		</shape>
+	</scene>
+</x3d>
