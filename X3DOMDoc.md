@@ -47,12 +47,28 @@ Currently testing:
 ```
 
 ```XML with Texture
+first.x3d
 <x3d xmlns="http://www.x3dom.org/x3dom" showStat="true" showLog="false" x="0px" y="0px" width='854px' height='480px'>
 	<scene>
 		<shape>
 			<appearance>
 				<Texture repeatS="false" repeatT="false" scale="true">
 					<video id="x3d_vid" src='"./files/bunny[original].mp4"'>
+					</video>
+				</Texture>
+			</appearance>
+			<box size="4 4 4"></box>
+		</shape>
+	</scene>
+</x3d>
+
+second.x3d
+<x3d xmlns="http://www.x3dom.org/x3dom" showStat="true" showLog="false" x="0px" y="0px" width='854px' height='480px'>
+	<scene>
+		<shape>
+			<appearance>
+				<Texture repeatS="false" repeatT="false" scale="true">
+					<video id="x3d_vid" src="./files/bunny.mp4">
 					</video>
 				</Texture>
 			</appearance>

@@ -1,0 +1,13 @@
+<x3d xmlns="http://www.x3dom.org/x3dom" showStat="true" showLog="false" x="0px" y="0px" width='854px' height='480px'>
+	<scene>
+		<shape>
+			<appearance>
+				<Texture repeatS="false" repeatT="false" scale="true">
+					<video id="x3d_vid" src="bunnyX3DFinal.mp4">
+					</video>
+				</Texture>
+			</appearance>
+			<Cylinder radius="3" height="5.0"></Cylinder>
+		</shape>
+	</scene>
+</x3d>
