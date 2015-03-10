@@ -481,7 +481,8 @@ function load() {
 	}
 	mp4box.onSamples = function (id, user, samples) {	
 		var texttrack = user;
-		//Log.i("TextTrack #"+id,"Received "+samples.length+" new sample(s)");
+		if(id==3)
+			Log.i("TextTrack #"+id,"Received "+samples.length+" new sample(s)");
 		for (var j = 0; j < samples.length; j++) {
 			var sample = samples[j];
 			if (sample.description.type === "wvtt") {
@@ -745,31 +746,3 @@ function x3DoRender(x3dObject){
 	}
 	
 }
-
-/*
-			document.addEventListener('DOMContentLoaded', function(){
-				var v = document.getElementById('v');
-				var c = document.getElementById('c');
-				var ctx = c.getContext('2d');
-				
-				var cw = Math.floor(c.clientWidth / 100);
-				var ch = Math.floor(c.clientHeight / 100);
-				//c.width = cw;
-				//c.height = ch;
-
-				
-				v.addEventListener('play',function(){
-					draw(this, ctx, cw, ch);
-				},false);
-				
-			},false);
-				
-				function draw(v,ca,w,h){
-					if(v.paused || v.ended) return false;
-					ca.drawImage(v,0,0);
-					setTimeout(draw,20,v,ca,w,h);
-				}	
-				
-				*/
-
-
