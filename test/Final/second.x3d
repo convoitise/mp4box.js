@@ -1,4 +1,4 @@
-<x3d xmlns="http://www.x3dom.org/x3dom" showStat="true" showLog="false" x="0px" y="0px" width='854px' height='480px'>
+<x3d xmlns="http://www.x3dom.org/x3dom" showStat="true" showLog="false" x="0px" y="0px" width='500px' height='300px'>
 	<scene>
 		<shape>
 			<appearance>
@@ -7,7 +7,8 @@
 					</video>
 				</Texture>
 			</appearance>
-			<Cylinder radius="3" height="5.0"></Cylinder>
+			<Cylinder radius="1.0" height="2.6"></Cylinder>
 		</shape>
+		<background skyColor='.9 .9 .95'></background>
 	</scene>
 </x3d>

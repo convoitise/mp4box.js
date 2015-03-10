@@ -1,4 +1,4 @@
-<x3d xmlns="http://www.x3dom.org/x3dom" showStat="true" showLog="false" x="0px" y="0px" width='854px' height='480px'>
+<x3d xmlns="http://www.x3dom.org/x3dom" showStat="true" showLog="false" x="0px" y="0px" width='500px' height='300px'>
 	<scene>
 		<shape>
 			<appearance>
@@ -9,5 +9,6 @@
 			</appearance>
 			<box size="4 4 4"></box>
 		</shape>
+		<background skyColor='.9 .9 .95'></background>
 	</scene>
 </x3d>
