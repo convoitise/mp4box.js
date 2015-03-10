@@ -481,7 +481,7 @@ function load() {
 	}
 	mp4box.onSamples = function (id, user, samples) {	
 		var texttrack = user;
-		Log.i("TextTrack #"+id,"Received "+samples.length+" new sample(s)");
+		//Log.i("TextTrack #"+id,"Received "+samples.length+" new sample(s)");
 		for (var j = 0; j < samples.length; j++) {
 			var sample = samples[j];
 			if (sample.description.type === "wvtt") {
@@ -496,7 +496,14 @@ function load() {
 				var xmlSub4Parser = new XMLSubtitlein4Parser();
 				var xmlSubSample = xmlSub4Parser.parseSample(sample);
 				console.log("calling parseXMLtoDOM");
-				parseXMLtoDOM(metaElement, xmlSubSample);	//¡k we handle one x3d for now
+				console.log("_Sample DTS:"+sample.dts+"  Sample Timescale:"+sample.timescale+" Sample Duration:"+sample.duration+"  video time:"+v.currentTime);
+					if(v.currentTime==0){
+						v.addEventListener("playing",
+							setTimeout(parseXMLtoDOM, (sample.dts/sample.timescale)*1000, metaElement, xmlSubSample),
+							true
+						);
+					}
+				//parseXMLtoDOM(metaElement, xmlSubSample);	//we handle one x3d for now
 				console.log("Parsed XML sample at time "+Log.getDurationString(sample.dts,sample.timescale)+" :", xmlSubSample.document);
 			} else if (sample.description.type === "mett" || sample.description.type === "sbtt" || sample.description.type === "stxt") {
 				var textSampleParser = new Textin4Parser();
