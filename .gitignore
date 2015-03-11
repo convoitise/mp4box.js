@@ -1,5 +1,8 @@
 #other testfiles
 /bucket/*
+/mp4box.js-master/*
+/test/files/*
+
 
 #webserver used for local testing
 mongoose-free-5.5.exe
