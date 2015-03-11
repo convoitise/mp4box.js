@@ -431,6 +431,8 @@ MP4Box.prototype.getInfo = function() {
 	movie.isFragmented = (this.inputIsoFile.moov.mvex != null);
 	if (movie.isFragmented && this.inputIsoFile.moov.mvex.mehd) {
 		movie.fragment_duration = this.inputIsoFile.moov.mvex.mehd.fragment_duration;
+	} else {
+		movie.fragment_duration = 0;
 	}
 	movie.isProgressive = this.inputIsoFile.isProgressive;
 	movie.hasIOD = (this.inputIsoFile.moov.iods != null);
@@ -593,11 +595,6 @@ MP4Box.prototype.seekTrack = function(time, useRap, trak) {
 	var timescale;
 	for (j = 0; j < trak.samples.length; j++) {
 		sample = trak.samples[j];
-		if (useRap && sample.is_rap) {
-			rap_offset = sample.offset;
-			rap_time = sample.cts;
-			rap_seek_sample_num = j;
-		}
 		if (j === 0) {
 			seek_offset = sample.offset;
 			seek_sample_num = 0;
@@ -606,6 +603,11 @@ MP4Box.prototype.seekTrack = function(time, useRap, trak) {
 			seek_offset = trak.samples[j-1].offset;
 			seek_sample_num = j-1;
 			break;
+		} 
+		if (useRap && sample.is_rap) {
+			rap_offset = sample.offset;
+			rap_time = sample.cts;
+			rap_seek_sample_num = j;
 		}
 	}
 	if (useRap) {
