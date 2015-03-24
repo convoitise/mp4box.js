@@ -14,11 +14,20 @@ var downloader = new Downloader();
 var video;
 
 /* XML-Specific Stuff */
+/* All X3D-relevant printouts start with the '[X2DOM]' tag */
 
+	/* options */
+	var useTimeOuts = false;	//refresh 3D canvas with timeouts, instead of requestAnimationFrame
+	var timeOutT = 20;			//time refresh rate when using timeouts
+	
 	/* the HTML5 parent element of meta (reserved for X3D, SVG etc)*/
 	var metaElement;	//we display X3D here
 	var canvasElement;	//for texture testing
 	var canvasInX3D = false;	//we have a canvas inside the rendered X3D Scene
+	
+	/* for testing delays */
+	var timeArray = [];		//measuring delay between 3d scenes
+	var framesCopied =0;	//not used anymore
 	
 /*Endof XML-Specific */
 
@@ -510,7 +519,7 @@ function load() {
 						console.log("[X2DOM] metx sample out of time");
 					}
 				//parseXMLtoDOM(metaElement, xmlSubSample);	//we handle one x3d for now
-				console.log("Parsed XML sample at time "+Log.getDurationString(sample.dts,sample.timescale)+" :", xmlSubSample.document);
+				console.log("[X2DOM] Parsed XML sample at time "+Log.getDurationString(sample.dts,sample.timescale)+" :", xmlSubSample.document);
 			} else if (sample.description.type === "mett" || sample.description.type === "sbtt" || sample.description.type === "stxt") {
 				var textSampleParser = new Textin4Parser();
 				if (sample.description.txtC && j===0) {
@@ -653,7 +662,13 @@ function setupCanvas(){
 	v.addEventListener('play',function(){
 		c.width = movieInfo.videoTracks[0].video.width;
 		c.height = movieInfo.videoTracks[0].video.height;
-		drawToCanvas(v, ctx);
+		if(!useTimeOuts){
+			console.log("[X2DOM] update frames using requestAnimationFrame");
+			window.requestAnimationFrame(animateCanvas);
+		}else{
+			console.log("[X2DOM] update frames using timeouts");
+			drawToCanvas(v, ctx)
+		};
 	},false);
 				
 }
@@ -665,15 +680,27 @@ function copyToX3DCanvas(canvasIn){
 	
 	ctx.drawImage(canvasIn, 0, 0);
 	tempC.parentNode._x3domNode.invalidateGLObject();
-	console.log("[X2DOM] time after render:"+v.currentTime);
+	if(timeArray.length==1) console.log("[X2DOM] Delay to render new 3D scene: "+(v.currentTime-timeArray.pop()));
 
 }
 
+/* Using requestAnimationFrame */
+function animateCanvas(){
+	var c = canvasElement;
+	var ca = c.getContext('2d');
+	
+			if(v.paused || v.ended) return false;
+			ca.drawImage(v,0,0);
+			if(canvasInX3D)copyToX3DCanvas(ca.canvas);
+			window.requestAnimationFrame(animateCanvas);
+}	
+
+/* Using TimeOuts */
 function drawToCanvas(v,ca){
 			if(v.paused || v.ended) return false;
 			ca.drawImage(v,0,0);
 			if(canvasInX3D)copyToX3DCanvas(ca.canvas);
-			setTimeout(drawToCanvas,20,v,ca);
+			setTimeout(drawToCanvas,timeOutT,v,ca);
 }	
 
 /* Entry point when receiving XML document */
@@ -690,7 +717,9 @@ function parseXMLtoDOM(parentElement, xmlObject){
 		console.log("[X2DOM] No X3D Node Found - Exiting X2DOM...");
 		return;
 	}
-	console.log("[X2DOM] time before setting textures:"+v.currentTime);
+	//console.log("[X2DOM] time before setting textures:"+v.currentTime);
+	timeArray.push(v.currentTime);
+	
 	/* Checking if the X3D Scene has a video texture */
 	if(xmlObject.getElementsByTagName("video").length>0){
 		console.log("[X2DOM] We have "+xmlObject.getElementsByTagName("video").length+" video texture(s)");
