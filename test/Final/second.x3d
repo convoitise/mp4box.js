@@ -1,14 +1,14 @@
-<x3d xmlns="http://www.x3dom.org/x3dom" showStat="true" showLog="false" x="0px" y="0px" width='500px' height='300px'>
+<x3d xmlns="http://www.x3dom.org/x3dom" showStat="false" showLog="false" x="0px" y="0px" width='600px' height='400px'>
 	<scene>
-		<shape>
-			<appearance>
-				<Texture repeatS="false" repeatT="false" scale="true">
-					<video id="x3d_vid" src="bunnyX3DFinal.mp4">
-					</video>
-				</Texture>
-			</appearance>
-			<Cylinder radius="1.0" height="2.6"></Cylinder>
-		</shape>
+			<shape>
+				<appearance>
+					<Texture repeatS="false" repeatT="false" scale="true">
+						<video id="x3d_vid" src="bunnyX3DFinal.mp4">
+						</video>
+					</Texture>
+				</appearance>
+				<Cylinder radius="1.6" height="6"></Cylinder>
+			</shape>
 		<background skyColor='.9 .9 .95'></background>
 	</scene>
 </x3d>
