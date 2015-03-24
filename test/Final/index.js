@@ -143,7 +143,7 @@ function getBasicTrackInfo(track) {
 	} else {
 		for (var i = 0; i < track.references.length; i++) {
 			if (i > 0) html += "<br>";
-			html += "Reference of type "+track.references[i]+" to tracks "+track.references[i].track_ids;
+			html += "Reference of type "+track.references[i]+" to track's "+track.references[i].track_ids;
 		}
 	}
 	html += "</td>";
@@ -496,13 +496,18 @@ function load() {
 			} else if (sample.description.type === "metx" || sample.description.type === "stpp") {
 				var xmlSub4Parser = new XMLSubtitlein4Parser();
 				var xmlSubSample = xmlSub4Parser.parseSample(sample);
-				console.log("calling parseXMLtoDOM");
-				console.log("_Sample DTS:"+sample.dts+"  Sample Timescale:"+sample.timescale+" Sample Duration:"+sample.duration+"  video time:"+v.currentTime);
-					if(v.currentTime==0){
+				console.log("[X2DOM] Sample DTS:"+sample.dts+"  Sample Timescale:"+sample.timescale+" Sample Duration:"+sample.duration+"  video time:"+v.currentTime+"   adding to: "+(sample.dts/sample.timescale)*1000);
+					if(v.currentTime==0 || v.currentTime<((sample.dts/sample.timescale)*1000)){
+						console.log("[X2DOM] added timeout - parseXMLtoDOM for metx sample - in "+(sample.dts/sample.timescale)+"sec");
 						v.addEventListener("playing",
 							setTimeout(parseXMLtoDOM, (sample.dts/sample.timescale)*1000, metaElement, xmlSubSample),
 							true
 						);
+					}else if(v.currentTime<((sample.duration-sample.dts)/sample.timescale)*1000){
+						console.log("[X2DOM] calling parseXMLtoDOM for metx sample NOW");
+						parseXMLtoDOM(metaElement, xmlSubSample);
+					}else{
+						console.log("[X2DOM] metx sample out of time");
 					}
 				//parseXMLtoDOM(metaElement, xmlSubSample);	//we handle one x3d for now
 				console.log("Parsed XML sample at time "+Log.getDurationString(sample.dts,sample.timescale)+" :", xmlSubSample.document);
@@ -644,11 +649,10 @@ function setupCanvas(){
 
 	var c = canvasElement;
 	var ctx = c.getContext('2d');
-	
-	c.width = movieInfo.videoTracks[0].track_width;
-	c.height = movieInfo.videoTracks[0].track_height;
 
 	v.addEventListener('play',function(){
+		c.width = movieInfo.videoTracks[0].video.width;
+		c.height = movieInfo.videoTracks[0].video.height;
 		drawToCanvas(v, ctx);
 	},false);
 				
@@ -661,6 +665,7 @@ function copyToX3DCanvas(canvasIn){
 	
 	ctx.drawImage(canvasIn, 0, 0);
 	tempC.parentNode._x3domNode.invalidateGLObject();
+	console.log("[X2DOM] time after render:"+v.currentTime);
 
 }
 
@@ -685,7 +690,7 @@ function parseXMLtoDOM(parentElement, xmlObject){
 		console.log("[X2DOM] No X3D Node Found - Exiting X2DOM...");
 		return;
 	}
-
+	console.log("[X2DOM] time before setting textures:"+v.currentTime);
 	/* Checking if the X3D Scene has a video texture */
 	if(xmlObject.getElementsByTagName("video").length>0){
 		console.log("[X2DOM] We have "+xmlObject.getElementsByTagName("video").length+" video texture(s)");

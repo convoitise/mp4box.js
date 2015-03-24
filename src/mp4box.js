@@ -595,6 +595,8 @@ MP4Box.prototype.seekTrack = function(time, useRap, trak) {
 	var timescale;
 	for (j = 0; j < trak.samples.length; j++) {
 		sample = trak.samples[j];
+		if(sample.description.type === "metx")
+			console.log("metx");
 		if (j === 0) {
 			seek_offset = sample.offset;
 			seek_sample_num = 0;
