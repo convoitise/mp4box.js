@@ -41,11 +41,16 @@ Sample Descriptor
 ***
 XML with MovieTexture
 ```XML
-			<x3d width='854px' height='480px'>
-				<scene>
-					<shape><appearance><MovieTexture url='"./files/bunny480p.mp4"'></MovieTexture> </appearance><box></box></shape>
-				</scene>
-			</x3d>
+<x3d width='854px' height='480px'>
+	<scene>
+		<shape>
+			<appearance>
+				<MovieTexture url='"./files/bunny480p.mp4"'></MovieTexture>
+			</appearance>
+			<box></box>
+		</shape>
+	</scene>
+</x3d>
 ```
 
 ***
