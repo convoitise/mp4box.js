@@ -26,11 +26,11 @@ Log of X3DOMsupport
 
 #####Known issues:
 
-
+***
 Currently testing:
 
 Sample Descriptor
-```
+```XML
 	<?xml version="1.0" encoding="UTF-8" ?>
 	<NHNTStream version="1.0" timeScale="25000" trackID="3" mediaType="meta" mediaSubType="metx" text_encoding="utf-8" xml_namespace="http://www.web3d.org/specifications/x3d-namespace" xml_schema_location="http://www.web3d.org/specifications/x3d-3.0.xsd">
 		<NHNTSample DTS="0"     isRAP="yes" mediaFile="first.x3d"/>
@@ -38,7 +38,7 @@ Sample Descriptor
 	</NHNTStream>
 
 ```
-
+***
 XML with MovieTexture
 ```XML
 			<x3d width='854px' height='480px'>
@@ -48,7 +48,9 @@ XML with MovieTexture
 			</x3d>
 ```
 
+***
 XML with Texture
+
 first.x3d
 ```XML
 <x3d xmlns="http://www.x3dom.org/x3dom" showStat="true" showLog="false" x="0px" y="0px" width='854px' height='480px'>
