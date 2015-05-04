@@ -8,6 +8,7 @@ var movieInfo;
 
 /* object responsible for file downloading */
 var downloader = new Downloader();
+downloader.setDownloadTimeoutCallback = setDownloadTimeout;
 
 /* the HTML5 video element */
 var video;
@@ -21,7 +22,7 @@ var autoplay = false;
 var startButton, loadButton, initButton, initAllButton, playButton;
 var urlInput, chunkTimeoutInput, chunkSizeInput;
 var infoDiv, dlTimeoutDiv;
-var chunkTimeoutLabel, chunkSizeLabel, segmentSizeLabel;
+var chunkTimeoutLabel, chunkSizeLabel, segmentSizeLabel, extractionSizeLabel;
 var urlSelector;
 var saveChecked;
 
@@ -35,18 +36,23 @@ window.onload = function () {
 	initAllButton = document.getElementById("initAllButton");
 	urlInput = document.getElementById('url');
 	chunkTimeoutInput = document.getElementById('chunk_speed_range');
-	chunkSizeInput = document.getElementById("segment_size_range");
+	chunkSizeInput = document.getElementById("chunk_size_range");
 	infoDiv = document.getElementById('infoDiv');
 	dlTimeoutDiv = document.getElementById('dlTimeout');
 	chunkTimeoutLabel = document.querySelector('#chunk_speed_range_out');	
 	chunkSizeLabel = document.querySelector('#chunk_size_range_out');
 	segmentSizeLabel = document.querySelector('#segment_size_range_out');
+	extractionSizeLabel = document.querySelector('#extraction_size_range_out');
 	playbackRateLabel = document.querySelector('#playback_rate_range_out');
 	chunkDownloadBitRate = document.querySelector('#chunk_dl_rate');
 	urlSelector = document.getElementById('urlSelector');
 	urlSelector.selectedIndex = -1;
 	saveChecked = document.getElementById("saveChecked");
 	
+	for (var i in sampleUrls) {
+		urlSelector.add(new Option(sampleUrls[i].desc, sampleUrls[i].url));
+	}
+
 	video.addEventListener("seeking", onSeeking);
 	reset();	
 }
@@ -91,6 +97,10 @@ function setDownloadChunkSize(value) {
 
 function setSegmentSize(value) {
 	segmentSizeLabel.value = value;
+}
+
+function setExtractionSize(value) {
+	extractionSizeLabel.value = value;
 }
 
 function setPlaybackRate(value) {
@@ -311,7 +321,7 @@ function onInitAppended(e) {
 		sb.addEventListener('updateend', onUpdateEnd.bind(sb, true));
 		/* In case there are already pending buffers we call onUpdateEnd to start appending them*/
 		onUpdateEnd.call(sb, false);
-		if (autoplay) {
+		if (autoplay && startButton.disabled) {
 			start();
 		}
 	}
@@ -347,7 +357,7 @@ function addBuffer(video, track_id, codec) {
 	} else {
 		Log.w("MSE", "MIME type '"+mime+"' not supported for creation of a SourceBuffer for track id "+track_id);
 		var textrack = video.addTextTrack("subtitles", "Text track for track "+track_id);
-		mp4box.setExtractionOptions(track_id, textrack, { nbSamples: 1 });
+		mp4box.setExtractionOptions(track_id, textrack, { nbSamples: parseInt(extractionSizeLabel.value) });
 	}
 }
 
@@ -452,6 +462,15 @@ function reset() {
 	resetDisplay();
 }
 
+function resetCues() {
+	for (var i = 0; i < video.textTracks.length; i++) {
+		var texttrack = video.textTracks[i];
+		while (texttrack.cues.length > 0) {
+			texttrack.removeCue(texttrack.cues[0]);
+		}
+	}
+} 
+
 function load() {
 	var ms = video.ms;
 	if (ms.readyState !== "open") {
@@ -465,7 +484,9 @@ function load() {
 	mp4box.onReady = function (info) {
 		Log.i("Application", "Movie information received");
 		movieInfo = info;
-		stop();
+		if (!autoplay) {
+			stop();
+		}
 		if (info.isFragmented) {
 			ms.duration = info.fragment_duration/info.timescale;
 		} else {
@@ -580,8 +601,9 @@ function onSeeking(e) {
 		}
 		/* Chrome fires twice the seeking event with the same value */
 		Log.i("Application", "Seeking called to video time "+Log.getDurationString(video.currentTime));
-		seek_info = mp4box.seek(video.currentTime, true);
 		downloader.stop();
+		resetCues();
+		seek_info = mp4box.seek(video.currentTime, true);
 		downloader.setChunkStart(seek_info.offset);
 		downloader.resume();
 		startButton.disabled = true;

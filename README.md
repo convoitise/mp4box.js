@@ -12,7 +12,7 @@ It can be used to:
 - [extract](#extraction) samples from an MP4 to create TextTracks.
 - more to come.
 
-A demo is available [here](http://download.tsi.telecom-paristech.fr/gpac/mp4box.js/) and the QUnit tests are [here](http://download.tsi.telecom-paristech.fr/gpac/mp4box.js/qunit.html)
+A Player demo is available [here](http://download.tsi.telecom-paristech.fr/gpac/mp4box.js/), a File Analyzer is available [here](http://download.tsi.telecom-paristech.fr/gpac/mp4box.js/filereader.html), and some QUnit tests are [here](http://download.tsi.telecom-paristech.fr/gpac/mp4box.js/qunit.html)
 
 API
 ===
@@ -32,10 +32,10 @@ mp4box.flush();
 ```
 
 ####onMoovStart()####
-The `onMoovStart` callback is called when the 'moov' box is starting to be parsed, i.e. when the metadata about the file is parsed. Depending on the download speed, it may take a while to download the whole 'moov' box. The end of parsing is signaled by the `onReady` callback.
+The `onMoovStart` callback is called when the 'moov' box is starting to be parsed. Depending on the download speed, it may take a while to download the whole 'moov' box. The end of parsing is signaled by the `onReady` callback.
 
 ```javascript
-mp4box.onMoovStart = function (info) {
+mp4box.onMoovStart = function () {
 	console.log("Starting to receive File Information");
 }
 ```
